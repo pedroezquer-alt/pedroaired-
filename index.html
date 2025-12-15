@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Pedro Aired??!!??</title>
+  <meta name="description" content="An ominous countdown to midnight — and a sad rocket that finally lifts off." />
+
+  <!-- iMessage / link preview (works when this page is hosted on a public URL) -->
+  <meta property="og:title" content="Pedro Aired??!!??" />
+  <meta property="og:description" content="Countdown expires at midnight. When it hits zero… the rocket leaves." />
+  <meta property="og:type" content="website" />
+  <!-- IMPORTANT: set this to your hosted absolute URL to preview.png (or preview.svg if you keep SVG) -->
+  <meta property="og:image" content="PREVIEW_IMAGE_URL_HERE" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root{
+      --ink:#d7deff;
+      --dim:#9aa3c8;
+      --night:#020208;
+      --panel:#05060cdd;
+      --edge:#2b3150;
+    }
+
+    /* Ominous vibe */
+    html,body{height:100%; background:var(--night); margin:0; color:var(--ink); }
+    body{
+      overflow:hidden;
+      font-family: ui-monospace, Menlo, Monaco, "Courier New", monospace;
+      letter-spacing: 0.02em;
+    }
+    .bg{
+      position:fixed; inset:0;
+      background:
+        radial-gradient(1200px 700px at 35% 25%, #0e1430 0%, #070915 55%, #020208 100%);
+    }
+    .bg::after{
+      content:"";
+      position:absolute; inset:-20%;
+      background-image: url("rocket-bg.svg");
+      background-size: cover;
+      background-position: center 60%;
+      opacity: 0.75;
+      filter: contrast(1.08) saturate(0.9);
+      transform: scale(1.02);
+    }
+
+    /* film grain */
+    .grain{
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.03), rgba(255,255,255,0.03) 1px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 4px);
+      mix-blend-mode: overlay;
+      opacity: 0.16;
+      animation: drift 7s linear infinite;
+    }
+    @keyframes drift{
+      0%{ transform: translate3d(0,0,0); }
+      100%{ transform: translate3d(-2%,1%,0); }
+    }
+
+    .wrap{
+      position:relative;
+      height:100%;
+      display:grid;
+      place-items:center;
+      padding: clamp(16px, 4vw, 42px);
+    }
+
+    .title{
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: clamp(34px, 4.4vw, 64px);
+      text-align:center;
+      margin: 0 0 14px 0;
+      text-shadow: 0 0 22px rgba(215,222,255,0.18);
+      letter-spacing: 0.02em;
+    }
+
+    .panel{
+      width:min(760px, 92vw);
+      border-radius: 26px;
+      background: var(--panel);
+      border: 1px solid color-mix(in oklab, var(--edge) 70%, transparent);
+      box-shadow: 0 18px 55px rgba(0,0,0,0.55);
+      padding: 22px 22px 18px;
+      backdrop-filter: blur(6px);
+    }
+
+    .sub{
+      margin:0 0 14px 0;
+      color: var(--dim);
+      text-align:center;
+      font-size: clamp(12px, 1.6vw, 15px);
+    }
+
+    .clock{
+      display:flex;
+      justify-content:center;
+      gap: 12px;
+      align-items:baseline;
+      padding: 10px 0 4px;
+      user-select:none;
+      font-variant-numeric: tabular-nums;
+    }
+    .digit{
+      font-size: clamp(46px, 8.5vw, 88px);
+      line-height: 1;
+      text-shadow: 0 0 26px rgba(215,222,255,0.22);
+      filter: drop-shadow(0 0 10px rgba(0,0,0,0.75));
+    }
+    .colon{
+      font-size: clamp(36px, 7vw, 66px);
+      opacity: 0.65;
+      transform: translateY(-3px);
+    }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-top: 12px;
+      color: color-mix(in oklab, var(--dim) 82%, white);
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .hint{
+      margin-top: 12px;
+      color: var(--dim);
+      font-size: 12px;
+      text-align:center;
+      opacity:0.85;
+    }
+
+    /* Rocket animation overlay (we animate the background rocket by moving the svg layer) */
+    .launch .bg::after{
+      animation: takeoff 5.8s cubic-bezier(.18,.9,.16,1) forwards;
+      opacity: 0.9;
+    }
+    .launch .grain{ opacity:0.28; }
+
+    @keyframes takeoff{
+      0%{
+        background-position: center 60%;
+        filter: contrast(1.08) saturate(0.9) blur(0px);
+      }
+      20%{
+        background-position: center 56%;
+      }
+      55%{
+        background-position: center 30%;
+        filter: contrast(1.12) saturate(1.0) blur(0.2px);
+      }
+      100%{
+        background-position: center -40%;
+        filter: contrast(1.18) saturate(1.05) blur(0.6px);
+      }
+    }
+
+    /* flame + rumble */
+    .flame{
+      position: fixed;
+      left: 50%;
+      top: 72%;
+      transform: translate(-50%, -50%);
+      width: min(440px, 80vw);
+      height: min(440px, 80vw);
+      opacity: 0;
+      pointer-events:none;
+      filter: blur(0.2px);
+    }
+    .launch .flame{
+      opacity: 0.9;
+      animation: flame 5.8s ease-out forwards;
+    }
+    @keyframes flame{
+      0%{ transform: translate(-50%,-50%) scale(0.7); opacity: 0; }
+      15%{ opacity: 0.85; }
+      60%{ transform: translate(-50%,-42%) scale(1.05); opacity: 0.55; }
+      100%{ transform: translate(-50%,-32%) scale(1.25); opacity: 0; }
+    }
+
+    .rumble.launch .panel{
+      animation: rumble 0.12s infinite linear;
+      transform-origin: 50% 50%;
+    }
+    @keyframes rumble{
+      0%{ transform: translate(0,0); }
+      25%{ transform: translate(1px,-1px); }
+      50%{ transform: translate(-1px,1px); }
+      75%{ transform: translate(-1px,-1px); }
+      100%{ transform: translate(1px,1px); }
+    }
+
+    /* accessibility */
+    @media (prefers-reduced-motion: reduce){
+      .grain, .launch .bg::after, .launch .flame, .rumble.launch .panel { animation: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- flame overlay -->
+  <svg class="flame" viewBox="0 0 400 400" aria-hidden="true">
+    <defs>
+      <radialGradient id="f" cx="50%" cy="20%" r="70%">
+        <stop offset="0%" stop-color="#ffd9a6" stop-opacity="0.9"/>
+        <stop offset="45%" stop-color="#ff7a7a" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <path d="M200,55
+             C250,125 255,155 235,210
+             C285,240 290,300 200,350
+             C110,300 115,240 165,210
+             C145,155 150,125 200,55 Z"
+          fill="url(#f)" opacity="0.9"/>
+  </svg>
+
+  <main class="wrap">
+    <section class="panel" role="group" aria-label="Countdown clock">
+      <h1 class="title">Pedro Aired??!!??</h1>
+      <p class="sub" id="subtitle">Counting down to midnight.</p>
+
+      <div class="clock" aria-live="polite" aria-atomic="true">
+        <span class="digit" id="hh">00</span>
+        <span class="colon">:</span>
+        <span class="digit" id="mm">00</span>
+        <span class="colon">:</span>
+        <span class="digit" id="ss">00</span>
+      </div>
+
+      <div class="meta">
+        <div id="targetLine">Target: —</div>
+        <div id="tzLine">Timezone: —</div>
+      </div>
+
+      <div class="hint">Tip: host this page (GitHub Pages / Netlify) so iMessage shows a rich preview image.</div>
+    </section>
+  </main>
+
+  <script>
+    // Midnight "tonight" in the viewer's local timezone:
+    // i.e., next local midnight boundary.
+    function nextLocalMidnight() {
+      const now = new Date();
+      const target = new Date(now);
+      target.setHours(24, 0, 0, 0); // next midnight
+      return target;
+    }
+
+    const target = nextLocalMidnight();
+
+    const hh = document.getElementById('hh');
+    const mm = document.getElementById('mm');
+    const ss = document.getElementById('ss');
+    const subtitle = document.getElementById('subtitle');
+    const targetLine = document.getElementById('targetLine');
+    const tzLine = document.getElementById('tzLine');
+
+    const pad2 = (n) => String(n).padStart(2,'0');
+
+    function formatTarget(d){
+      // e.g. "Tue Dec 16, 2025 12:00 AM"
+      return d.toLocaleString(undefined, {
+        weekday:'short', year:'numeric', month:'short', day:'numeric',
+        hour:'numeric', minute:'2-digit', hour12:true
+      });
+    }
+
+    function tick(){
+      const now = new Date();
+      const diff = target.getTime() - now.getTime();
+
+      targetLine.textContent = "Target: " + formatTarget(target);
+      try { tzLine.textContent = "Timezone: " + Intl.DateTimeFormat().resolvedOptions().timeZone; }
+      catch(e){ tzLine.textContent = "Timezone: local"; }
+
+      if (diff <= 0){
+        hh.textContent = "00"; mm.textContent="00"; ss.textContent="00";
+        subtitle.textContent = "Expired. It’s time.";
+
+        // Trigger takeoff once
+        if (!document.body.classList.contains('launch')){
+          document.body.classList.add('launch', 'rumble');
+
+          // stop rumble after a bit
+          setTimeout(() => document.body.classList.remove('rumble'), 2200);
+        }
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      hh.textContent = pad2(hours);
+      mm.textContent = pad2(minutes);
+      ss.textContent = pad2(seconds);
+
+      // Ominous “nearing midnight” pulse
+      if (hours === 0 && minutes < 10){
+        subtitle.textContent = "Midnight is close.";
+      } else {
+        subtitle.textContent = "Counting down to midnight.";
+      }
+    }
+
+    tick();
+    setInterval(tick, 250);
+
+    // Optional: click to force-test the launch
+    // window.__testLaunch = () => { target.setTime(Date.now()); };
+  </script>
+</body>
+</html>
